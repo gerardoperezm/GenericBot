@@ -1,0 +1,20 @@
+{
+  "name": "genericbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gerardoperezm/GenericBot.git"
+  },
+  "author": "Gerardo Perez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gerardoperezm/GenericBot/issues"
+  },
+  "homepage": "https://github.com/gerardoperezm/GenericBot#readme"
+}
