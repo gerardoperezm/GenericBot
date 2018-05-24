@@ -1,5 +1,8 @@
 'use strict';
 
+// Import environment variables, comment on production
+require('dotenv').config();
+
 /*-----------------------------------------------------------------------------
 A simple echo bot for the Microsoft Bot Framework. 
 -----------------------------------------------------------------------------*/
@@ -30,14 +33,22 @@ server.post('/api/messages', connector.listen());
 * For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
 * ---------------------------------------------------------------------------------------- */
 
-var tableName = 'botdata';
-var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
-var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azureTableClient);
+if (process.env.Environment == 'dev') {
+    var tableStorage = new builder.MemoryBotStorage();
+} else {
+    var tableName = 'botdata';
+    var azureTableClient = new botbuilder_azure.AzureTableClient(tableName, process.env['AzureWebJobsStorage']);
+    var tableStorage = new botbuilder_azure.AzureBotStorage({ gzipData: false }, azureTableClient);
+}
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector);
 bot.set('storage', tableStorage);
 
+// Create dialogs based on intents
+var intents = builder.IntentDialog();
+
+// List all dialogs
 bot.dialog('/', function (session) {
     session.send('You said ' + session.message.text);
 });

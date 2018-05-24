@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
+    "start": "nodemon app"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,11 @@
   "homepage": "https://github.com/gerardoperezm/GenericBot#readme",
   "dependencies": {
     "botbuilder": "^3.15.0",
+    "botbuilder-azure": "^3.1.0",
     "dotenv": "^5.0.1",
     "restify": "^7.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }
