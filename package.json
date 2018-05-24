@@ -19,6 +19,7 @@
   "homepage": "https://github.com/gerardoperezm/GenericBot#readme",
   "dependencies": {
     "botbuilder": "^3.15.0",
+    "dotenv": "^5.0.1",
     "restify": "^7.2.0"
   }
 }
