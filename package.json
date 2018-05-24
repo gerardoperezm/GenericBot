@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/gerardoperezm/GenericBot/issues"
   },
-  "homepage": "https://github.com/gerardoperezm/GenericBot#readme"
+  "homepage": "https://github.com/gerardoperezm/GenericBot#readme",
+  "dependencies": {
+    "botbuilder": "^3.15.0",
+    "restify": "^7.2.0"
+  }
 }
