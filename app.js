@@ -1,6 +1,6 @@
 'use strict';
 
-// Import environment variables, comment on production
+// Import environment variables
 require('dotenv').config();
 
 /*-----------------------------------------------------------------------------
@@ -46,9 +46,11 @@ var bot = new builder.UniversalBot(connector);
 bot.set('storage', tableStorage);
 
 // Create dialogs based on intents
-var intents = builder.IntentDialog();
+var intents = new builder.IntentDialog();
+bot.dialog('/', intents);
 
-// List all dialogs
-bot.dialog('/', function (session) {
-    session.send('You said ' + session.message.text);
-});
+intents.onDefault([
+    (session) => {
+        session.send('You said ' + session.message.text);
+    }
+]);
