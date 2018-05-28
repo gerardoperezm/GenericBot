@@ -1,6 +1,6 @@
 'use strict';
 
-// Load environment variables
+// Cargar variables de ambiente
 require('dotenv').config();
 
 var https = require('https');
@@ -11,6 +11,9 @@ var subscriptionKey = process.env.TextTranslatorSubscriptionKey;
 var defaultLanguage = process.env.TextTranslatorDefaultLanguage;
 var userLanguage;
 
+/**get_guid
+ * Genera un string aleatorio
+ */
 function get_guid() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random() * 16 | 0;
@@ -19,6 +22,11 @@ function get_guid() {
     });
 }
 
+/**translate
+ * Detecta el idioma del mensaje y lo traduce al idioma deseado
+ * @param language Idioma al que se quiere traducir el texto
+ * @param content Texto que se quiere traducir
+ */
 function translate(language, content) {
     var request_params = {
         method: 'POST',
@@ -31,8 +39,7 @@ function translate(language, content) {
         }
     };
 
-    console.log(request_params.path);
-
+    // Se genera una promesa para utilizar los resultados fuera de la funcion
     return new Promise((resolve, reject) => {
         var req = https.request(request_params, (response) => {
             var body = '';
@@ -56,14 +63,21 @@ function translate(language, content) {
 
 module.exports = {
 
+    /**toBot
+     * Intercepta el mensaje ingresado por el usuario y
+     * se llama la funcion "translate" con el idioma
+     * por defecto del bot y el mensaje.
+     */
     toBot: (session, next) => {
         var content = JSON.stringify([{ 'Text': session.message.text }]);
 
         translate(defaultLanguage, content)
             .then((data) => {
                 userLanguage = data[0].detectedLanguage.language;
-                session.message.text = data[0].translations[0].text;
-                session.save();
+                if (defaultLanguage != userLanguage) {
+                    session.message.text = data[0].translations[0].text;
+                    session.save();
+                }
                 next();
             })
             .catch((error) => {
@@ -72,6 +86,12 @@ module.exports = {
             });
     },
 
+    /**toUser
+     * Recive la respuesta del bot hacia el usuario y
+     * se llama la funcion "translate" con el idioma
+     * del usuario detectado previamente y el texto
+     * de respuesta.
+     */
     toUser: (event, next) => {
         var content = JSON.stringify([{ 'Text': event.text }]);
 
