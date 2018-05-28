@@ -11,6 +11,9 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var botbuilder_azure = require("botbuilder-azure");
 
+// Middlewares
+var translator = require('./middlewares/translator');
+
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -45,12 +48,27 @@ if (process.env.Environment == 'dev') {
 var bot = new builder.UniversalBot(connector);
 bot.set('storage', tableStorage);
 
+// Load middlewares
+bot.use({
+    botbuilder: (session, next) => {
+        translator.toBot(session, next);
+    },
+    send: (session, next) => {
+        translator.toUser(session, next);
+    }
+});
+
 // Create dialogs based on intents
 var intents = new builder.IntentDialog();
 bot.dialog('/', intents);
 
 intents.onDefault([
     (session) => {
-        session.send('You said ' + session.message.text);
+        // session.send('You said ' + session.message.text);
+        session.send([
+            'Hola ¿cómo estás?',
+            'Buenas tardes joven',
+            '¿Te gustaría pedir informes?'
+        ]);
     }
 ]);
