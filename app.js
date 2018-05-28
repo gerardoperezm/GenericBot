@@ -48,7 +48,7 @@ if (process.env.Environment == 'dev') {
 var bot = new builder.UniversalBot(connector);
 bot.set('storage', tableStorage);
 
-// Load middlewares
+// Use middlewares
 bot.use({
     botbuilder: (session, next) => {
         translator.toBot(session, next);
@@ -64,11 +64,6 @@ bot.dialog('/', intents);
 
 intents.onDefault([
     (session) => {
-        // session.send('You said ' + session.message.text);
-        session.send([
-            'Hola ¿cómo estás?',
-            'Buenas tardes joven',
-            '¿Te gustaría pedir informes?'
-        ]);
+        session.send('You said ' + session.message.text);
     }
 ]);
